@@ -33,6 +33,7 @@ def run_sim(
     parameters: dict | None = None,
     waves: bool = True,
     build_dir: Path | None = None,
+    timescale: tuple[str, str] = ("1ns", "1ps"),
 ) -> None:
     """Build and run one testbench.
 
@@ -61,6 +62,7 @@ def run_sim(
         parameters=parameters or {},
         build_args=build_args,
         build_dir=str(build_dir),
+        timescale=timescale,
         waves=waves,
         always=True,
     )

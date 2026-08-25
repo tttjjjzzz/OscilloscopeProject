@@ -1,3 +1,4 @@
+`timescale 1ns / 1ps
 // Toolchain validation only. Not part of the scope design.
 // If this does not simulate, fix your setup before starting M0.
 
