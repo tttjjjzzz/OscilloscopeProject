@@ -1,0 +1,93 @@
+# ---- Quartus ----
+# Keep: .qpf .qsf .sdc .qip .v .sv .bdf
+db/
+incremental_db/
+output_files/
+simulation/
+greybox_tmp/
+hc_output/
+timing/
+*.qws
+*.rpt
+*.summary
+*.pin
+*.smsg
+*.jdi
+*.sld
+*.done
+*.sof
+*.pof
+*.rbf
+*.jic
+*.qar
+*.qdf
+*.cmp.*
+*.sopcinfo
+c5_pin_model_dump.txt
+PLLJ_PLLSPE_INFO.txt
+
+# Qsys / Platform Designer generated
+*_sim/
+*/synthesis/
+*/testbench/
+
+# ---- Simulation ----
+sim_build/
+sim/**/sim_build/
+results.xml
+*.vcd
+*.fst
+*.ghw
+*.vvp
+transcript
+vsim.wlf
+work/
+modelsim.ini
+
+# ---- Python ----
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+.coverage
+htmlcov/
+*.egg-info/
+
+# ---- STM32 / embedded ----
+fw/build/
+fw/Debug/
+fw/Release/
+*.o
+*.d
+*.elf
+*.bin
+*.hex
+*.map
+*.su
+.mxproject
+
+# ---- KiCad ----
+*-backups/
+fp-info-cache
+*.kicad_prl
+*.net
+*.bak
+*~
+_autosave-*
+
+# ---- Captures / data ----
+data/
+captures/
+*.npy
+*.npz
+!docs/**/*.npy
+
+# ---- Editors / OS ----
+.vscode/
+!.vscode/settings.json
+.idea/
+Thumbs.db
+desktop.ini
+ehthumbs.db
+.DS_Store
