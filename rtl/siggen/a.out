@@ -1,0 +1,57 @@
+#! /c/Source/iverilog-install/bin/vvp
+:ivl_version "14.0 (devel)";
+:ivl_delay_selection "TYPICAL";
+:vpi_time_precision - 12;
+:vpi_module "C:\iverilog\lib\ivl\system.vpi";
+:vpi_module "C:\iverilog\lib\ivl\vhdl_sys.vpi";
+:vpi_module "C:\iverilog\lib\ivl\vhdl_textio.vpi";
+:vpi_module "C:\iverilog\lib\ivl\v2005_math.vpi";
+:vpi_module "C:\iverilog\lib\ivl\va_math.vpi";
+:vpi_module "C:\iverilog\lib\ivl\v2009.vpi";
+S_00000284A0EF58E0 .scope package, "$unit" "$unit" 2 1;
+ .timescale 0 0;
+S_00000284A0EF5A70 .scope module, "sync_debounce" "sync_debounce" 3 3;
+ .timescale -9 -12;
+    .port_info 0 /INPUT 1 "clk";
+    .port_info 1 /INPUT 1 "rst_n";
+    .port_info 2 /INPUT 1 "async_in";
+    .port_info 3 /OUTPUT 1 "level";
+    .port_info 4 /OUTPUT 1 "rise";
+    .port_info 5 /OUTPUT 1 "fall";
+P_00000284A0F0A280 .param/l "DEBOUNCE_CYCLES" 0 3 4, +C4<00000000000000001100001101010000>;
+o00000284A0F0DF58 .functor BUFZ 1, c4<z>; HiZ drive
+v00000284A0EF5C00_0 .net "async_in", 0 0, o00000284A0F0DF58;  0 drivers
+o00000284A0F0DF88 .functor BUFZ 1, c4<z>; HiZ drive
+v00000284A0F08980_0 .net "clk", 0 0, o00000284A0F0DF88;  0 drivers
+v00000284A0F08A20_0 .var "fall", 0 0;
+v00000284A0F08AC0_0 .var "level", 0 0;
+v00000284A0F4EFC0_0 .var "rise", 0 0;
+o00000284A0F0E048 .functor BUFZ 1, c4<z>; HiZ drive
+v00000284A0F4F060_0 .net "rst_n", 0 0, o00000284A0F0E048;  0 drivers
+v00000284A0F4F100_0 .var "sync_ff", 1 0;
+E_00000284A0F09B40 .event posedge, v00000284A0F08980_0;
+    .scope S_00000284A0EF5A70;
+T_0 ;
+    %wait E_00000284A0F09B40;
+    %load/vec4 v00000284A0F4F060_0;
+    %nor/r;
+    %flag_set/vec4 8;
+    %jmp/0xz  T_0.0, 8;
+    %pushi/vec4 0, 0, 2;
+    %assign/vec4 v00000284A0F4F100_0, 0;
+    %jmp T_0.1;
+T_0.0 ;
+    %load/vec4 v00000284A0F4F100_0;
+    %parti/s 1, 0, 2;
+    %load/vec4 v00000284A0EF5C00_0;
+    %concat/vec4; draw_concat_vec4
+    %assign/vec4 v00000284A0F4F100_0, 0;
+T_0.1 ;
+    %jmp T_0;
+    .thread T_0;
+# The file index is used to find the file name in the following table.
+:file_names 4;
+    "N/A";
+    "<interactive>";
+    "-";
+    ".\sync_debounce.sv";
