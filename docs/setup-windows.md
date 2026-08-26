@@ -19,18 +19,26 @@ pulls it and runs it.
 ## Before anything: where the repo lives
 
 ```
-C:\dev\scope
+C:\Users\Tiger\Documents\GitHub\OscilloscopeProject
 ```
 
-Not `Documents`, not `Desktop`, **not OneDrive**. Three reasons:
+Two constraints, both already satisfied:
 
-- Quartus has long-standing problems with long paths and paths containing spaces. `C:\Users\Juelin Zhou\Documents\...` has both.
-- OneDrive syncing a Quartus project directory while Quartus has it open causes file-lock errors and corrupted `db/` state. This is a real and common failure.
-- Quartus generates thousands of small files during compile. Sync clients choke on that.
+- **No spaces in any folder name.** Quartus shells out to internal tools that don't always quote paths, so `Oscilloscope Project` gets split into two arguments and you get "file not found" errors pointing at files that plainly exist. This is the one that actually bites.
+- **Not inside OneDrive.** Syncing a Quartus project while Quartus has it open causes file-lock errors and corrupted `db/` state — Quartus generates thousands of small files per compile and sync clients choke.
 
-Check whether Documents is OneDrive-redirected before you assume it isn't — on a fresh Windows 11 install it usually is.
+Documents on Windows 11 is often OneDrive-redirected. Verify once:
 
-Enable long path support anyway, it costs nothing:
+```powershell
+(Get-Item "$env:USERPROFILE\Documents").Target
+```
+
+Empty output means not redirected — you're fine where you are. If it returns a
+OneDrive path, move the repo somewhere outside it.
+
+Path length is not a concern at this depth; Quartus nests maybe 60-80 chars
+beyond your base and the limit is 260. Enable long path support anyway, it costs
+nothing:
 
 ```powershell
 # elevated PowerShell
@@ -65,7 +73,7 @@ C:\intelFPGA_lite\<version>\quartus\drivers\usb-blaster-ii
 Install from python.org (not the Microsoft Store version — it sandboxes paths in ways that break tooling). Check "Add to PATH".
 
 ```powershell
-cd C:\dev\scope
+cd "$env:USERPROFILE\Documents\GitHub\OscilloscopeProject"
 py -m venv .venv
 .venv\Scripts\activate
 py -m pip install --upgrade pip
@@ -201,7 +209,7 @@ around M5, when you're fiddling with GUI layout. See
 
 | Check | Command / action | Expected |
 |---|---|---|
-| Repo path | — | `C:\dev\scope`, not in OneDrive |
+| Repo path | `(Get-Item "$env:USERPROFILE\Documents").Target` | empty = not OneDrive-redirected |
 | Quartus | Tools → Programmer → Hardware Setup | `USB-BlasterII` listed |
 | Cyclone V support | New project wizard, device family list | Cyclone V present |
 | Python | `py --version` | 3.11+ |

@@ -79,7 +79,7 @@ push back and ask why.
 ## Environment gotchas
 
 - Use `py` on Windows, `python3` on the Pi. Paths use backslashes in Windows shell commands but forward slashes in Python.
-- **Repo must live at a short path with no spaces** — `C:\dev\scope`. Quartus breaks on long paths, and it must never be inside OneDrive.
+- Repo is at `C:\Users\Tiger\Documents\GitHub\OscilloscopeProject`. Don't suggest moving it. Folder names must have no spaces (Quartus mishandles them); the current path is fine.
 - Never edit `.qsf` pin assignments outside git. If Quartus rewrites it, that's a commit, not noise to discard.
 - Line endings are handled by `.gitattributes`. Shell scripts destined for the Pi stay LF.
 - DE0-CV GPIO is **3.3 V**. Flag anything 5 V before I connect it.

@@ -42,6 +42,8 @@ def run_sim(
     test_module    python module holding the @cocotb.test() coroutines
     parameters     SV parameter overrides, e.g. {"DEPTH": 64}
     waves          dump a .fst for GTKWave
+    timescale      (unit, precision). Without this icarus defaults to 1s
+                   precision and cocotb clocks round to zero.
     """
     runner = get_runner(SIM)
 
