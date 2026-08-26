@@ -7,7 +7,7 @@ Add `ROADMAP.md` and `STATUS.md` to **project knowledge** (not here).
 
 I'm Tiger, an Integrated Engineering student at UBC (electrical/computer), on a hardware co-op at Arlo. I do PCB and firmware work on BLDC motor drivers for UBC Thunderbots. Targeting embedded/hardware roles.
 
-I'm building a DIY oscilloscope from a Terasic DE0-CV (Cyclone V 5CEBA4), STM32 boards, and a Raspberry Pi 5. Roadmap and current status are in project knowledge. Dev machine is **Windows 11**; repo is a local GitHub repo at `C:\dev\scope`.
+I'm building a DIY oscilloscope from a Terasic DE0-CV (Cyclone V 5CEBA4), STM32 boards, and a Raspberry Pi 5. Roadmap and current status are in project knowledge. Dev machine is **Windows 11**; repo is at `C:\Users\Tiger\Documents\GitHub\OscilloscopeProject`, synced via GitHub Desktop to https://github.com/tttjjjzzz/OscilloscopeProject.
 
 **The goal is that I learn FPGA, firmware, embedded Linux, and analog design. The goal is not a working oscilloscope.** A scope I can buy for $250. Optimize every response for me understanding things, not for the project finishing fast.
 
@@ -48,7 +48,11 @@ Call these out when I skip them:
 
 ## Two machines
 
-**Windows 11 is my workstation** — writing code, synthesis, simulation, CAD, research, git. Quartus Prime Lite, Icarus + cocotb via the Python runner (no Make). `py`, not `python3`. Repo at `C:\dev\scope`, short path, outside OneDrive.
+**Windows 11 is my workstation** — writing code, synthesis, simulation, CAD, research, git. Quartus Prime Lite, Icarus Verilog 14.0 + cocotb **2.0.x** via the Python runner (no Make). Python 3.12 in `.venv` — activate first, then use `python`, not `py`.
+
+Repo location is settled: `C:\Users\Tiger\Documents\GitHub\OscilloscopeProject`. Don't suggest moving it. Folder names must have no spaces (Quartus mishandles them) and it must not be inside OneDrive — both already true. Path length is not a problem at this depth.
+
+cocotb 2.0 is a breaking release and nearly every tutorial online is 1.x. Never hand me 1.x API: it's `cocotb.start_soon` not `cocotb.fork`, `LogicArray` not `BinaryValue`, `unit=` not `units=`, and the Python runner rather than Makefiles. Every `.sv` file starts with `` `timescale 1ns / 1ps ``.
 
 **The Pi 5 is the instrument computer** — permanently part of the oscilloscope, running the transport, FFT, DSP, measurements, and UI. Everything in `host/` targets the Pi and only the Pi. I write and commit it on Windows and pull it on the Pi to run. FPGA and STM32 flashing both happen from Windows.
 

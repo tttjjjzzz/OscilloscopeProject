@@ -8,9 +8,9 @@ remembers what present-you already figured out.
 ## Where I am
 
 **Current milestone:** M0 — FPGA signal generator
-**Started:** —
-**Blocked on:** nothing yet
-**Next action:** finish toolchain setup, get `py -m pytest sim/examples -v` passing
+**Started:** 2026-08-24
+**Blocked on:** nothing
+**Next action:** NCO-vs-divider comparison, then `sync_debounce` + its testbench. Quartus installing in background.
 
 ## Environment
 
@@ -18,13 +18,13 @@ remembers what present-you already figured out.
 
 | Thing | Detail |
 |---|---|
-| Repo path | `C:\dev\scope` |
-| Quartus | Prime Lite ___ |
-| Simulator | Icarus ___ / Questa Intel Starter ___ |
-| cocotb | ___ |
-| Python | ___ |
-| STM32 toolchain | ___ |
-| GitHub remote | ___ |
+| Repo path | `C:\Users\Tiger\Documents\GitHub\OscilloscopeProject` |
+| Quartus | installing — Prime Lite, Cyclone V device support only |
+| Simulator | Icarus Verilog 14.0 (devel) |
+| cocotb | 2.0.1 — **2.x API, not 1.x** |
+| Python | 3.12.10 in `.venv` (3.14 also installed, unusable for cocotb) |
+| STM32 toolchain | not installed yet |
+| GitHub remote | https://github.com/tttjjjzzz/OscilloscopeProject |
 
 **Instrument computer — Pi 5.** Runs `host/`. Permanently part of the scope.
 
@@ -42,23 +42,23 @@ remembers what present-you already figured out.
 | Thing | Detail |
 |---|---|
 | FPGA board | Terasic DE0-CV, Cyclone V 5CEBA4F23C7N |
-| STM32 board | ___ |
+| STM32 board | Nucleo-G474RE |
 | ADC | AD9226 module (M4) |
 | Transport | FT232H → Pi (M4) |
 
 ## Setup checklist
 
-- [ ] Repo at a short path, not in OneDrive
+- [x] Repo path settled — no spaces, not OneDrive-redirected
 - [ ] Long path support enabled
 - [ ] Quartus installed with Cyclone V device support
 - [ ] USB-Blaster II driver working, board detected in Programmer
-- [ ] Python venv + `requirements.txt` installed
-- [ ] `iverilog -V` works
-- [ ] `cocotb-config --version` works
-- [ ] **`py -m pytest sim/examples -v` passes**
+- [x] Python venv + `requirements.txt` installed
+- [x] `iverilog -V` works
+- [x] `cocotb-config --version` works
+- [x] **`python -m pytest sim/examples -v` passes** — 4/4
 - [ ] `arm-none-eabi-gcc --version` works
 - [ ] ST-LINK detected
-- [ ] First commit pushed
+- [x] First commit pushed
 
 Pi (needed from M2):
 
@@ -110,11 +110,14 @@ Settled. Don't relitigate without a reason.
 | cocotb Python runner instead of Makefiles | Avoids MSYS2/make path translation on Windows |
 | Buy a reference scope before M7 | Compensated attenuator trimmers cannot be tuned blind |
 | Conservative SystemVerilog subset | Icarus SV support is partial; also better RTL style while learning |
-| | |
+| Python 3.12, not 3.14 | cocotb ships C extensions; wheels lag new CPython releases by months |
+| `` `timescale 1ns / 1ps `` at the top of every `.sv` | Without it Icarus defaults to 1 s precision and cocotb clocks round to zero |
+| Repo stays at its current path | No spaces, not OneDrive-redirected, well under the path limit. Settled — not revisiting. |
+| Nucleo-G474RE as instrument MCU | HRTIM for narrow-pulse generation, FDCAN for M9 decode, buffered DAC for M3 stimulus |
 
 ## Open questions
 
--
+- (none open)
 
 ## Parked
 
@@ -132,4 +135,6 @@ Things that broke and what fixed them. This table pays for itself.
 
 | Date | Symptom | Cause | Fix |
 |---|---|---|---|
-| | | | |
+| 2026-08-24 | `pip install` → "Failed to build 'cocotb' when getting requirements to build wheel" | Python 3.14 — cocotb has C extensions and no wheels that new, so pip fell back to compiling with no MSVC present | Installed 3.12 alongside, rebuilt venv with `py -3.12 -m venv .venv` |
+| 2026-08-24 | All 4 cocotb tests fail at 0.00 ns: "Unable to accurately represent 10(ns) with the simulator precision of 1e0" | No `` `timescale `` in the `.sv`, so Icarus defaulted to 1 s precision and the 10 ns clock rounded to zero | Added `` `timescale 1ns / 1ps `` at the top of the `.sv`, plus `timescale=("1ns", "1ps")` in `runner.py`'s build call |
+| 2026-08-24 | `iverilog` not recognized after installing | PATH checkbox missed in the installer | `[Environment]::SetEnvironmentVariable("Path", $env:Path + ";C:\iverilog\bin;C:\iverilog\gtkwave\bin", "User")`, then a new shell |
