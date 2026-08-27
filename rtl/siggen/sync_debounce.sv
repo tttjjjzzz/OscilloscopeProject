@@ -19,7 +19,7 @@ module sync_debounce #(
     localparam int CW = $clog2(DEBOUNCE_CYCLES); //ceiling log, which yields 16.. suince log2(50000)=15.61
     logic [CW-1:0] count;
     //block 3 variables
-    logic level_q //this is the past value of level, one cycle ago.
+    logic level_q; //this is the past value of level, one cycle ago.
 
     //block2
     always_ff @(posedge clk) begin
