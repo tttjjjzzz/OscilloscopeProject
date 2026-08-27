@@ -21,7 +21,7 @@ module sync_debounce #(
     //block 3 variables
     logic level_q; //this is the past value of level, one cycle ago.
 
-    //block2
+    //block1
     always_ff @(posedge clk) begin
         if (!rst_n) begin
             sync_ff <= 2'b00;

@@ -12,6 +12,9 @@ remembers what present-you already figured out.
 **Blocked on:** nothing
 **Next action:** NCO-vs-divider comparison, then `sync_debounce` + its testbench. Quartus installing in background.
 
+M0:
+-Finished the Synchronized Debouncer module, and verified 5/5 tests
+
 ## Environment
 
 **Workstation — Windows 11.** Code, synthesis, simulation, CAD.
@@ -72,7 +75,7 @@ Pi (needed from M2):
 
 | M | Name | Status | Tag | Closed |
 |---|---|---|---|---|
-| 0 | Signal generator | in progress | — | — |
+| 0 | Signal generator | in progress — `sync_debounce` done (1/5 modules) | — | — |
 | 1 | Capture engine (sim) | not started | — | — |
 | 2 | Logic analyzer | not started | — | — |
 | 3 | STM32 control plane | not started | — | — |
@@ -115,9 +118,19 @@ Settled. Don't relitigate without a reason.
 | Repo stays at its current path | No spaces, not OneDrive-redirected, well under the path limit. Settled — not revisiting. |
 | Nucleo-G474RE as instrument MCU | HRTIM for narrow-pulse generation, FDCAN for M9 decode, buffered DAC for M3 stimulus |
 
+Decision: Every input goes through a 2ff synchronizer + debouncer
+Why: clock relationshpi, make sure we line up
+
+Decision: await ReadOnly() before every assert in cocotb
+Why: RisingEdge wakes before the NBA queue update pahse, so reads return PRE-EDGE values
+
 ## Open questions
 
-- (none open)
+- `siggen_core`: NCO vs counter-divider. Roadmap wants 1 Hz–10 MHz *and* 1% duty
+  steps; at 10 MHz there are only 5 clocks/period so duty quantizes to 20%
+  regardless. Decide which spec bends.
+- `DEBOUNCE_CYCLES` for the real board is a guess (50k = 1 ms @ 50 MHz). Measure
+  actual DE0-CV KEY/SW bounce with the M2 logic analyzer and set it from data.
 
 ## Parked
 
