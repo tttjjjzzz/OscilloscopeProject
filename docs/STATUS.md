@@ -118,11 +118,15 @@ Settled. Don't relitigate without a reason.
 | Repo stays at its current path | No spaces, not OneDrive-redirected, well under the path limit. Settled — not revisiting. |
 | Nucleo-G474RE as instrument MCU | HRTIM for narrow-pulse generation, FDCAN for M9 decode, buffered DAC for M3 stimulus |
 
+FOR M0
 Decision: Every input goes through a 2ff synchronizer + debouncer
 Why: clock relationshpi, make sure we line up
-
 Decision: await ReadOnly() before every assert in cocotb
 Why: RisingEdge wakes before the NBA queue update pahse, so reads return PRE-EDGE values
+Decision: Using a counter divider, not NCO, for siggen_core
+Why: Because every output clock period is exactly N clocks, no jitter, which NCO would cause
+Decision: from above decision, this leads to a 500Khz ceiling, and this keeps a 1% duty ceiling at every achievable frequency.
+
 
 ## Open questions
 
